@@ -54,8 +54,8 @@ def validate_cwd():
     for path in required:
         if not path.exists():
             print(
-                "Error: {dir} not found. Please run this script from "
-                "the project root.".format(dir=path.name)
+                f"Error: {path.name} not found. Please run this script from "
+                "the project root."
             )
             return False
     return True
@@ -156,7 +156,8 @@ def construct_parser():
     )
     ui_group.set_defaults(func=ui)
 
-    clean_group = subparsers.add_parser("clean", help="Clean leftover build files")
+    clean_group = subparsers.add_parser(
+        "clean", help="Clean leftover build files")
     clean_group.set_defaults(func=clean)
 
     return parser

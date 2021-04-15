@@ -112,7 +112,8 @@ class UIBuilder(object):
             path_in = paths["in"]
             path_out = paths["out"] / target
             if not path_in.exists():
-                logging.warning("No Qt %s folder found. Skipping build.", filetype)
+                logging.warning(
+                    "No Qt %s folder found. Skipping build.", filetype)
                 continue
             self._build(filetype, path_in, path_out, target, pyenv)
 
@@ -123,7 +124,7 @@ class UIBuilder(object):
 
         # Basic checks
 
-        tool = "{tool}{nr}".format(tool=settings["tool"], nr=self._pyqt_version[target])
+        tool = f"{settings['tool']}{self._pyqt_version[target]}"
         if which(tool) is None:
             logging.error("%s not found. Skipping %s build.", tool, tool)
             return False
@@ -168,9 +169,7 @@ class UIBuilder(object):
 
             logging.debug("Building element '%s'...", new_stem)
             # Use relative paths to improve readability of form header:
-            cmd = "{env} {tool} {in_file} -o {out_file}".format(
-                env=env, tool=tool, in_file=relpath(in_file), out_file=relpath(out_file)
-            )
+            cmd = f"{env} {tool} {relpath(in_file)} -o {relpath(out_file)}"
             call_shell(cmd)
 
             if post_build:
@@ -189,7 +188,7 @@ class UIBuilder(object):
         return (
             '''eval "$(pyenv init -)"'''
             '''&& eval "$(pyenv virtualenv-init -)"'''
-            """&& pyenv activate {pyenv} > /dev/null 2>&1 &&""".format(pyenv=pyenv)
+            f"""&& pyenv activate {pyenv} > /dev/null 2>&1 &&"""
         )
 
     def _get_format_dict(self):
@@ -198,16 +197,16 @@ class UIBuilder(object):
         start_year = self._config.get("copyright_start")
         now = datetime.now().year
         if start_year and start_year != now:
-            years = "{start_year}-{now}".format(start_year=start_year, now=now)
+            years = f"{start_year}-{now}"
         else:
-            years = "{now}".format(now=now)
+            years = f"{now}"
 
         contact = config.get("contact")
 
         format_dict = {
             "display_name": config["display_name"],
             "author": config["author"],
-            "contact": "" if not contact else " <{}>".format(contact),
+            "contact": "" if not contact else f" <{contact}>",
             "__title__": __title__,
             "__version__": __version__,
             "years": years,
@@ -228,12 +227,12 @@ class UIBuilder(object):
             f.write(init)
 
     def _generate_all_str(self, modules):
-        module_string = ",\n".join('    "{}"'.format(m) for m in modules)
+        module_string = ",\n".join(f'    "{m}"' for m in modules)
         out = _template_all.format(module_string)
         return out
 
     def _generate_import_str(self, modules):
-        out = "\n".join("from . import {}".format(m) for m in modules)
+        out = "\n".join(f"from . import {m}" for m in modules)
         return out
 
     def _munge_form(self, path):

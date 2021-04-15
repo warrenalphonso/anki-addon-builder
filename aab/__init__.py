@@ -54,17 +54,15 @@ __author__ = "Aristotelis P. (Glutanimate)"
 __title__ = "Anki Add-on Builder"
 __homepage__ = "https://glutanimate.com"
 
-COPYRIGHT_MSG = """\
-{title} v{version}
+COPYRIGHT_MSG = f"""\
+{__title__} v{__version__}
 
-Copyright (C) 2016-2019  {author}  <{homepage}>
+Copyright (C) 2016-2019  {__author__}  <{__homepage__}>
 
 This program comes with ABSOLUTELY NO WARRANTY;
 This is free software, and you are welcome to redistribute it
 under certain conditions; For details please see the LICENSE file.
-""".format(
-    title=__title__, version=__version__, author=__author__, homepage=__homepage__
-)
+"""
 
 # Global variables
 

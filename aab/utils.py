@@ -51,9 +51,7 @@ def call_shell(command, echo=False, error_exit=True, **kwargs):
             logging.info(decoded)
         return decoded
     except subprocess.CalledProcessError as e:
-        logging.error(
-            "Error while running command: '{command}'".format(command=command)
-        )
+        logging.error(f"Error while running command: '{command}'")
         logging.error(e.output.decode("utf-8"))
         if error_exit:
             sys.exit(1)
@@ -72,21 +70,17 @@ def purge(path, patterns, recursive=False):
     """
     if not path or not patterns:
         return False
-    pattern_string = " -o ".join("-name '{}'".format(p) for p in patterns)
-    pattern_string = "\( {} \)".format(pattern_string)
+    pattern_string = " -o ".join(f"-name '{p}'" for p in patterns)
+    pattern_string = f"\( {pattern_string} \)"
     depth = "-maxdepth 1" if not recursive else ""
-    cmd = 'find "{path}" {depth} {pattern_string} -delete'.format(
-        path=path, depth=depth, pattern_string=pattern_string
-    )
+    cmd = f'find "{path}" {depth} {pattern_string} -delete'
     return call_shell(cmd)
 
 
 def copy_recursively(source, target):
     if not source or not target:
         return False
-    return call_shell(
-        'cp -r "{source}" "{target}"'.format(source=source, target=target)
-    )
+    return call_shell(f'cp -r "{source}" "{target}"')
 
 
 def relpath(path):

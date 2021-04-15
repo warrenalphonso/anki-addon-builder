@@ -79,7 +79,8 @@ class AddonBuilder(object):
             sys.exit(1)
         self._callback_archive = callback_archive
         self._config = Config()
-        self._path_dist_module = PATH_DIST / "src" / self._config["module_name"]
+        self._path_dist_module = PATH_DIST / \
+            "src" / self._config["module_name"]
 
     def build(self, target="anki21", disttype="local", pyenv=None):
 
@@ -124,12 +125,9 @@ class AddonBuilder(object):
             to_zip = PATH_DIST / "src"
             ext = "zip"
 
-        out_name = "{repo_name}-{version}-{target}{dist}.{ext}".format(
-            repo_name=config["repo_name"],
-            version=self._version,
-            target=target,
-            dist="" if disttype == "local" else "-" + disttype,
-            ext=ext,
+        out_name = (
+            f"{config['repo_name']}-{self._version}-{target}"
+            f"{'' if disttype == 'local' else '-' + disttype}.{ext}"
         )
 
         out_path = PATH_ROOT / "build" / out_name
@@ -144,7 +142,7 @@ class AddonBuilder(object):
                     path = os.path.join(root, file)
                     myzip.write(path, path[rootlen:])
 
-        logging.info("Package saved as {out_name}".format(out_name=out_name))
+        logging.info(f"Package saved as {out_name}")
         logging.info("Done.")
 
         return out_path
@@ -156,7 +154,8 @@ class AddonBuilder(object):
         with path.open("w", encoding="utf-8") as f:
             f.write(
                 unicode(
-                    json.dumps(contents, indent=4, sort_keys=False, ensure_ascii=False)
+                    json.dumps(contents, indent=4,
+                               sort_keys=False, ensure_ascii=False)
                 )
             )
 
@@ -166,7 +165,8 @@ class AddonBuilder(object):
             if not path.is_dir():
                 continue
             for file in path.glob("LICENSE*"):
-                target = self._path_dist_module / "{stem}.txt".format(stem=file.stem)
+                target = self._path_dist_module / \
+                    f"{file.stem}.txt"
                 shutil.copyfile(unicode(file), unicode(target))
 
     def _copy_changelog(self):
