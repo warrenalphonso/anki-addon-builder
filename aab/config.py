@@ -34,7 +34,8 @@
 Project config parser
 """
 
-from __future__ import absolute_import, division, print_function, unicode_literals
+from __future__ import (absolute_import, division,
+                        print_function, unicode_literals)
 
 import json
 import logging
@@ -69,8 +70,8 @@ class Config(UserDict):
             self.data = data
         except (IOError, OSError, ValueError, ValidationError):
             logging.error(
-                f"Error: Could not read '{self._path.name}'. Traceback follows "
-                "below:\n"
+                f"Error: Could not read '{self._path.name}'. Traceback follows"
+                " below:\n"
             )
             raise
 

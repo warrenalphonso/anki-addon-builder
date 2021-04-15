@@ -34,7 +34,8 @@
 Utility functions
 """
 
-from __future__ import absolute_import, division, print_function, unicode_literals
+from __future__ import (absolute_import, division,
+                        print_function, unicode_literals)
 
 import sys
 import subprocess
@@ -71,7 +72,7 @@ def purge(path, patterns, recursive=False):
     if not path or not patterns:
         return False
     pattern_string = " -o ".join(f"-name '{p}'" for p in patterns)
-    pattern_string = f"\( {pattern_string} \)"
+    pattern_string = f"( {pattern_string} )"
     depth = "-maxdepth 1" if not recursive else ""
     cmd = f'find "{path}" {depth} {pattern_string} -delete'
     return call_shell(cmd)

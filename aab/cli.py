@@ -31,7 +31,8 @@
 # Any modifications to this file must keep this entire header intact.
 
 
-from __future__ import absolute_import, division, print_function, unicode_literals
+from __future__ import (absolute_import, division,
+                        print_function, unicode_literals)
 
 import sys
 import logging
@@ -152,7 +153,8 @@ def construct_parser():
     build_group.set_defaults(func=build)
 
     ui_group = subparsers.add_parser(
-        "ui", parents=[target_parent], help="Compile add-on user interface files"
+        "ui", parents=[target_parent],
+        help="Compile add-on user interface files"
     )
     ui_group.set_defaults(func=ui)
 
