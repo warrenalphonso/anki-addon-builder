@@ -75,7 +75,7 @@ def build(args):
     total = len(targets) * len(dists)
     for target in targets:
         for dist in dists:
-            logging.info("\n=== Build task %s/%s ===", cnt, total)
+            logging.info(f"\n=== Build task {cnt}/{total} ===")
             builder.build(target=target, disttype=dist)
             cnt += 1
 
@@ -88,7 +88,7 @@ def ui(args):
     cnt = 1
     total = len(targets)
     for target in targets:
-        logging.info("\n=== Build task %s/%s ===\n", cnt, total)
+        logging.info(f"\n=== Build task {cnt}/{total} ===\n")
         builder.build(target=target)
         cnt += 1
 

@@ -106,14 +106,14 @@ class UIBuilder(object):
         self._format_dict = self._get_format_dict()
 
     def build(self, target="anki21", pyenv=None):
-        logging.info("Starting UI build tasks for target %r...", target)
+        logging.info(f"Starting UI build tasks for target {target}...")
 
         for filetype, paths in self._paths.items():
             path_in = paths["in"]
             path_out = paths["out"] / target
             if not path_in.exists():
                 logging.warning(
-                    "No Qt %s folder found. Skipping build.", filetype)
+                    f"No Qt {filetype} folder found. Skipping build.")
                 continue
             self._build(filetype, path_in, path_out, target, pyenv)
 
@@ -126,26 +126,24 @@ class UIBuilder(object):
 
         tool = f"{settings['tool']}{self._pyqt_version[target]}"
         if which(tool) is None:
-            logging.error("%s not found. Skipping %s build.", tool, tool)
+            logging.error(f"{tool} not found. Skipping {tool} build.")
             return False
 
         ui_files = list(path_in.glob(settings["pattern"]))
         if not ui_files:
             logging.warning(
-                "No %s found in %s. Skipping %s build.", filetype, path_in, tool
+                f"No {filetype} found in {path_in}. Skipping {tool} build."
             )
             return False
 
         logging.info(
-            "Building files in '%s' to '%s' with '%s'",
-            relpath(path_in),
-            relpath(path_out),
-            tool,
+            f"Building files in '{relpath(path_in)}' to '{relpath(path_out)}'"
+            f" with '{tool}'"
         )
 
         # Cleanup
 
-        logging.debug("Cleaning up old %s...", filetype)
+        logging.debug(f"Cleaning up old {filetype}...")
         if path_out.exists():
             shutil.rmtree(unicode(path_out))
         path_out.mkdir(parents=True)
@@ -167,7 +165,7 @@ class UIBuilder(object):
             new_stem = stem + suffix
             out_file = Path(path_out / new_stem).with_suffix(".py")
 
-            logging.debug("Building element '%s'...", new_stem)
+            logging.debug(f"Building element '{new_stem}'...")
             # Use relative paths to improve readability of form header:
             cmd = f"{env} {tool} {relpath(in_file)} -o {relpath(out_file)}"
             call_shell(cmd)
@@ -181,7 +179,7 @@ class UIBuilder(object):
 
         self._write_init_file(modules, path_out)
 
-        logging.debug("Done with %s.", filetype)
+        logging.debug(f"Done with {filetype}.")
         return True
 
     def _pyenv_prefix(self, pyenv):
@@ -215,7 +213,7 @@ class UIBuilder(object):
         return format_dict
 
     def _write_init_file(self, modules, path_out):
-        logging.debug("Generating init file for %s", relpath(path_out))
+        logging.debug(f"Generating init file for {relpath(path_out)}")
 
         header = _template_header.format(**self._format_dict)
         all_str = self._generate_all_str(modules)
@@ -240,7 +238,7 @@ class UIBuilder(object):
         Munge generated form to remove resource imports
         (I prefer to initialize these manually)
         """
-        logging.debug("Munging %s...", relpath(path))
+        logging.debug(f"Munging {relpath(path)}...")
         with path.open("r+", encoding="utf-8") as f:
             form = f.read()
             munged = self._re_munge.sub("", form)

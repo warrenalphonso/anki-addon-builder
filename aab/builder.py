@@ -85,11 +85,8 @@ class AddonBuilder(object):
     def build(self, target="anki21", disttype="local", pyenv=None):
 
         logging.info(
-            "\n--- Building %s %s for %s/%s ---\n",
-            self._config["display_name"],
-            self._version,
-            target,
-            disttype,
+            f"\n--- Building {self._config['display_name']} {self._version}"
+            f" for {target}/{disttype} ---\n"
         )
 
         clean_repo()
